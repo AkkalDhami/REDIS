@@ -64,6 +64,26 @@ const runRedis = async () => {
         const updatedFruits = await client.sMembers('fruits');
         console.log('Updated Fruits:', updatedFruits);
 
+
+        //? ZADD
+        await client.zAdd('leaderboard', [
+            { score: 100, value: 'Player1' },
+            { score: 200, value: 'Player2' },
+            { score: 150, value: 'Player3' },
+            { score: 250, value: 'Player4' }
+        ]);
+
+        //? ZRANGE
+        const topPlayers = await client.zRange('leaderboard', 0, 2);
+        console.log('Top 3 Players:', topPlayers);
+
+        //? ZRANGE with scores
+        const topPlayersWithScores = await client.zRangeWithScores('leaderboard', 0, -1);
+        console.log('Top 3 Players with Scores:', topPlayersWithScores);
+
+        //? ZRANK
+        const rank = await client.zRank('leaderboard', 'Player4');
+        console.log('Rank of Player3:', rank);
     } catch (error) {
         console.error('Error connecting to Redis:', error);
     } finally {
