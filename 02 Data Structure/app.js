@@ -84,6 +84,28 @@ const runRedis = async () => {
         //? ZRANK
         const rank = await client.zRank('leaderboard', 'Player4');
         console.log('Rank of Player3:', rank);
+
+
+        //? HSET
+        await client.hSet('user:1', {
+            name: 'Akkal Dhami',
+            age: '20',
+            country: 'Nepal'
+        });
+
+        //? HGET
+        const userName = await client.hGet('user:1', 'name');
+        console.log('User Name:', userName);
+
+        //? HGETALL
+        const user = await client.hGetAll('user:1');
+        console.log('User:', user);
+
+        //? HDEL
+        await client.hDel('user:1', 'country');
+        const updatedUser = await client.hGetAll('user:1');
+        console.log('Updated User:', updatedUser);
+
     } catch (error) {
         console.error('Error connecting to Redis:', error);
     } finally {
